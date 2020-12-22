@@ -1,25 +1,41 @@
 package com.ironelder.movielistapp
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ironelder.movielistapp.databinding.ItemMovieListBinding
 
 class MovieListAdapter : RecyclerView.Adapter<MovieListAdapter.MovieListItem>() {
+    private val movieList = arrayListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListItem {
-        return MovieListItem(LayoutInflater.from(parent.context).inflate(R.layout.item_movie_list, parent, false))
+        return MovieListItem(
+            ItemMovieListBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int {
-        return 0
+        return movieList.size
     }
 
     override fun onBindViewHolder(holder: MovieListItem, position: Int) {
-//        TODO("Not yet implemented")
+        holder.setData(movieList[position])
     }
 
-    class MovieListItem(view: View) : RecyclerView.ViewHolder(view){
+    fun setData(data:List<String>){
+        movieList.clear()
+        movieList.addAll(data)
+        notifyDataSetChanged()
+    }
 
+    class MovieListItem(private val binding: ItemMovieListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun setData(title: String) {
+            binding.tvMovieTitle.text = title
+        }
     }
 }
